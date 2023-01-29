@@ -47,12 +47,12 @@ public class KeepsService
 
   internal string Remove(int id, string userId)
   {
-    Keep original = GetOne(id, userId);
-    if (original.CreatorId != userId)
+    Keep keep = GetOne(id, userId);
+    if (keep.CreatorId != userId)
     {
       throw new Exception("This Keep does not belong to you");
     }
-    _repo.Remove(id);
-    return $"{original.Name} has been taken care of";
+    _repo.Delete(id);
+    return $"{keep.Name} has been taken care of";
   }
 }
