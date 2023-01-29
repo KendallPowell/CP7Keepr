@@ -59,6 +59,14 @@ public class KeepsRepository : IRepository<Keep, int>
 
   public bool Update(Keep update)
   {
-    throw new NotImplementedException();
+    string sql = @"
+    UPDATE keeps SET
+    name = @name
+    description = @description
+    img = @img
+    WHERE id = @id;
+    ";
+    int rows = _db.Execute(sql, update);
+    return rows > 0;
   }
 }

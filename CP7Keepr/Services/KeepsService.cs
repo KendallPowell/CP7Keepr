@@ -32,4 +32,16 @@ public class KeepsService
     }
     return keep;
   }
+
+  internal Keep Update(Keep updateData)
+  {
+    Keep original = GetOne(updateData.Id, updateData.CreatorId);
+    if (original.CreatorId != updateData.CreatorId) throw new Exception("This is not yours to edit");
+    original.Name = updateData.Name ?? original.Name;
+    original.Description = updateData.Description ?? original.Description;
+    original.Img = updateData.Img ?? original.Img;
+
+    _repo.Update(original);
+    return original;
+  }
 }
