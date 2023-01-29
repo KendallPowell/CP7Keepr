@@ -26,7 +26,12 @@ public class KeepsRepository : IRepository<Keep, int>
 
   public bool Delete(int id)
   {
-    throw new NotImplementedException();
+    string sql = @"
+    DELETE FROM keeps
+    where id = @id;
+    ";
+    int rows = _db.Execute(sql, new { id });
+    return rows > 0;
   }
 
   public List<Keep> Get()

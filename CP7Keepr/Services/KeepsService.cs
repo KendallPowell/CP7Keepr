@@ -44,4 +44,15 @@ public class KeepsService
     _repo.Update(original);
     return original;
   }
+
+  internal string Remove(int id, string userId)
+  {
+    Keep original = GetOne(id, userId);
+    if (original.CreatorId != userId)
+    {
+      throw new Exception("This Keep does not belong to you");
+    }
+    _repo.Remove(id);
+    return $"{original.Name} has been taken care of";
+  }
 }
