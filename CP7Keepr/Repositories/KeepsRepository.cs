@@ -31,7 +31,13 @@ public class KeepsRepository : IRepository<Keep, int>
 
   public List<Keep> Get()
   {
-    throw new NotImplementedException();
+    string sql = @"
+    SELECT
+    *
+    FROM keeps;
+    ";
+    List<Keep> keeps = _db.Query<Keep>(sql).ToList();
+    return keeps;
   }
 
   public Keep GetOne(int id)

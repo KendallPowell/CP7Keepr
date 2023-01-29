@@ -16,4 +16,10 @@ public class KeepsService
     Keep keep = _repo.Create(keepData);
     return keep;
   }
+
+  internal List<Keep> Get(string id)
+  {
+    List<Keep> keeps = _repo.Get();
+    return keeps;
+  }
 }
