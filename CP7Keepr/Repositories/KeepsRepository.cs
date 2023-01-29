@@ -42,7 +42,19 @@ public class KeepsRepository : IRepository<Keep, int>
 
   public Keep GetOne(int id)
   {
-    throw new NotImplementedException();
+    string sql = @"
+    SELECT
+    k.*,
+    ac.*
+    FROM keeps k
+    JOIN accounts ac ON ac.id = k.creatorId
+    WHERE k.id = @id;
+  ";
+    return _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+    {
+      keep.Creator = account;
+      return keep;
+    }, new { id }).FirstOrDefault();
   }
 
   public bool Update(Keep update)

@@ -22,4 +22,14 @@ public class KeepsService
     List<Keep> keeps = _repo.Get();
     return keeps;
   }
+
+  internal Keep GetOne(int id, string userId)
+  {
+    Keep keep = _repo.GetOne(id);
+    if (keep == null)
+    {
+      throw new Exception("No Keep at this id");
+    }
+    return keep;
+  }
 }
