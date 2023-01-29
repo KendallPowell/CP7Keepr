@@ -52,11 +52,12 @@ public class KeepsController : ControllerBase
     try
     {
       Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
-      Keep keep = _keepsService.GetOne(id, userInfo.Id):
+      Keep keep = _keepsService.GetOne(id, userInfo.Id);
+      return Ok(keep);
     }
-     catch (Exception e)
+    catch (Exception e)
     {
-    return BadRequest(e.Message);
+      return BadRequest(e.Message);
     }
   }
 }
