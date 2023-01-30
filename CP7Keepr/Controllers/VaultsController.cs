@@ -15,7 +15,7 @@ public class VaultsController : ControllerBase
 
   [HttpPost]
   [Authorize]
-  public async Task<ActionResult<Keep>> Create([FromBody] Vault vaultData)
+  public async Task<ActionResult<Vault>> Create([FromBody] Vault vaultData)
   {
     try
     {
@@ -32,11 +32,12 @@ public class VaultsController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public ActionResult<Vault> GetOne(int id)
+  public async Task<ActionResult<Vault>> GetOne(int id)
   {
     try
     {
-      Vault vault = _vaultsService.GetOne(id);
+      Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+      Vault vault = _vaultsService.GetOne(id, userInfo?.Id);
       return Ok(vault);
     }
     catch (Exception e)
@@ -45,5 +46,21 @@ public class VaultsController : ControllerBase
     }
   }
 
-
+  [HttpPut("{id}")]
+  [Authorize]
+  public async Task<ActionResult<Vault>> Update(int id, [FromBody] Vault updateData)
+  {
+    try
+    {
+      Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+      updateData.CreatorId = userInfo.Id;
+      updateData.Id = id;
+      Vault vault = _vaultsService.Update(updateData, userInfo?.Id);
+      return Ok(vault);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 }

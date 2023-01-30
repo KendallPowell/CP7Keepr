@@ -36,4 +36,17 @@ public class VaultsRepository
     Vault vault = _db.Query<Vault>(sql, new { id }).FirstOrDefault();
     return vault;
   }
+
+  internal bool Update(Vault original)
+  {
+    string sql = @"
+    UPDATE vaults SET
+    name = @name,
+    description = @description,
+    img = @img
+    WHERE id = id;
+    ";
+    int rows = _db.Execute(sql, original);
+    return rows > 0;
+  }
 }

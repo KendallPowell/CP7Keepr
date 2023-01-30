@@ -15,13 +15,29 @@ public class VaultsService
     return vault;
   }
 
-  internal Vault GetOne(int id)
+  internal Vault GetOne(int id, string userId)
   {
     Vault vault = _repo.GetOne(id);
     if (vault == null)
     {
       throw new Exception($"No Vault at this id:{id}");
     }
+    if (vault.CreatorId != userId)
+    {
+      throw new Exception("This Vault does not belong to you.");
+    }
     return vault;
+  }
+
+  internal Vault Update(Vault updateData, string userId)
+  {
+    Vault original = GetOne(updateData.Id, userId);
+    if (original.CreatorId != updateData.CreatorId) throw new Exception("This does not belong to you");
+    original.Name = updateData.Name ?? original.Name;
+    original.Description = updateData.Description ?? original.Description;
+    original.Img = updateData.Img ?? original.Img;
+
+    _repo.Update(original);
+    return original;
   }
 }
