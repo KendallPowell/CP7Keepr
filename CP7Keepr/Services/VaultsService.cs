@@ -40,4 +40,15 @@ public class VaultsService
     _repo.Update(original);
     return original;
   }
+
+  internal string Remove(int id, string userId)
+  {
+    Vault original = GetOne(id, userId);
+    if (original.CreatorId != userId)
+    {
+      throw new Exception("This Vault does not belong to you..");
+    }
+    _repo.Remove(id);
+    return $"{original.Name} is no longer a thing";
+  }
 }
