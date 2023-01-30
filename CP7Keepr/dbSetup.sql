@@ -9,7 +9,18 @@ CREATE TABLE
     ) default charset utf8 COMMENT '';
 
 CREATE TABLE
-    keeps(
+    IF NOT EXISTS vaults(
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        description TEXT NOT NULL,
+        img VARCHAR(255) NOT NULL,
+        isPrivate BOOLEAN NOT NULL DEFAULT false,
+        creatorId VARCHAR(255) NOT NULL,
+        Foreign Key (creatorId) REFERENCES accounts (id) ON DELETE CASCADE
+    ) default charset utf8 COMMENT '';
+
+CREATE TABLE
+    IF NOT EXISTS keeps(
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(50) NOT NULL,
         description TEXT NOT NULL,

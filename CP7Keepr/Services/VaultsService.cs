@@ -14,4 +14,11 @@ public class VaultsService
     Vault vault = _repo.Create(vaultData);
     return vault;
   }
+
+  internal List<Vault> Get(string userId)
+  {
+    List<Vault> vaults = _repo.Get();
+    List<Vault> filtered = vaults.FindAll(f => f.IsPrivate == false || f.CreatorId == userId);
+    return filtered;
+  }
 }
