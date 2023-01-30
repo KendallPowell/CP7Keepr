@@ -47,7 +47,7 @@ public class KeepsController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public async Task<ActionResult<Keep>> Get(int id)
+  public async Task<ActionResult<Keep>> GetOne(int id)
   {
     try
     {
