@@ -31,18 +31,19 @@ public class VaultsController : ControllerBase
     }
   }
 
-  [HttpGet]
-  public async Task<ActionResult<List<Vault>>> Get()
+  [HttpGet("{id}")]
+  public ActionResult<Vault> GetOne(int id)
   {
     try
     {
-      Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
-      List<Vault> vaults = _vaultsService.Get(userInfo?.Id);
-      return Ok(vaults);
+      Vault vault = _vaultsService.GetOne(id);
+      return Ok(vault);
     }
     catch (Exception e)
     {
       return BadRequest(e.Message);
     }
   }
+
+
 }

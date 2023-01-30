@@ -15,10 +15,13 @@ public class VaultsService
     return vault;
   }
 
-  internal List<Vault> Get(string userId)
+  internal Vault GetOne(int id)
   {
-    List<Vault> vaults = _repo.Get();
-    List<Vault> filtered = vaults.FindAll(f => f.IsPrivate == false || f.CreatorId == userId);
-    return filtered;
+    Vault vault = _repo.GetOne(id);
+    if (vault == null)
+    {
+      throw new Exception($"No Vault at this id:{id}");
+    }
+    return vault;
   }
 }

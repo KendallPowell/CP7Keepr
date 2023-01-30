@@ -23,20 +23,17 @@ public class VaultsRepository
     return vaultData;
   }
 
-  internal List<Vault> Get()
+  internal Vault GetOne(int id)
   {
     string sql = @"
     SELECT
     v.*,
     ac.*
     FROM vaults v
-    JOIN accounts ac ON ac.id = v.creatorId;
+    JOIN accounts ac ON ac.id = v.creatorId
+    WHERE v.id = @id
     ";
-    List<Vault> vaults = _db.Query<Vault, Account, Vault>(sql, (vault account) =>
-    {
-      vault.Creator = account;
-      return vault;
-    }).ToList();
-    return vaults;
+    Vault vault = _db.Query<Vault>(sql, new { id }).FirstOrDefault();
+    return vault;
   }
 }
