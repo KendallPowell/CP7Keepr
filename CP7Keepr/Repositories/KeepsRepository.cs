@@ -56,9 +56,11 @@ public class KeepsRepository : IRepository<Keep, int>
     string sql = @"
     SELECT
     k.*,
+    COUNT(vk.id) AS kept,
     ac.*
     FROM keeps k
     JOIN accounts ac ON ac.id = k.creatorId
+    LEFT JOIN vaultkeeps vk ON vk.keepId = k.id
     WHERE k.id = @id;
   ";
     return _db.Query<Keep, Account, Keep>(sql, (keep, account) =>

@@ -11,3 +11,8 @@ public class Keep
   public string CreatorId { get; set; }
   public Account Creator { get; set; }
 }
+
+public class KeepinsideVaults : Keep
+{
+  public int VaultKeepId { get; set; }
+}

@@ -27,8 +27,19 @@ CREATE TABLE
         img VARCHAR(255) NOT NULL,
         views INT NOT NULL DEFAULT 0,
         creatorId VARCHAR(255) NOT NULL,
-        kept INT NOT NULL DEFAULT 0,
+        -- kept INT NOT NULL DEFAULT 0, drop this table recreate
         Foreign Key (creatorId) REFERENCES accounts (id) ON DELETE CASCADE
     ) default charset utf8 COMMENT '';
 
 DROP TABLE keeps;
+
+CREATE TABLE
+    IF NOT EXISTS vaultkeeps(
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        creatorId VARCHAR(255) NOT NULL,
+        vaultId INT NOT NULL,
+        keepId INT NOT NULL,
+        Foreign Key (creatorId) REFERENCES accounts (id) ON DELETE CASCADE,
+        Foreign Key (vaultId) REFERENCES vaults (id) ON DELETE CASCADE,
+        Foreign Key (keepId) REFERENCES keeps (id) ON DELETE CASCADE
+    ) default charset utf8 COMMENT '';

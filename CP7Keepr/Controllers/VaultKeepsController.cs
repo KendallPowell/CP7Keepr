@@ -23,8 +23,23 @@ public class VaultKeepsController : ControllerBase
       Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
       vaultkeepData.CreatorId = userInfo.Id;
       VaultKeep vaultkeep = _vaultkeepsService.Create(vaultkeepData);
-      vaultkeepData.KeepId = userInfo;
       return Ok(vaultkeep);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
+  [HttpDelete("{id}")]
+  [Authorize]
+  public async Task<ActionResult<string>> Remove(int id)
+  {
+    try
+    {
+      Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+      string message = _vaultkeepsService.Remove(id, userInfo.Id);
+      return Ok(message);
     }
     catch (Exception e)
     {
