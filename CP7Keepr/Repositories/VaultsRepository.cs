@@ -33,8 +33,11 @@ public class VaultsRepository
     JOIN accounts ac ON ac.id = v.creatorId
     WHERE v.id = @id
     ";
-    Vault vault = _db.Query<Vault>(sql, new { id }).FirstOrDefault();
-    return vault;
+    return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
+    {
+      vault.Creator = account;
+      return vault;
+    }, new { id }).FirstOrDefault();
   }
 
   internal void Remove(int id)

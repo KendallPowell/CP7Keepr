@@ -16,7 +16,7 @@ public class KeepsRepository : IRepository<Keep, int>
     INSERT INTO keeps
     (name, img, creatorId, description)
     VALUES
-    (@name, @img, @creatorId, description);
+    (@name, @img, @creatorId, @description);
     SELECT LAST_INSERT_ID();
     ";
     int id = _db.ExecuteScalar<int>(sql, keepData);
@@ -38,10 +38,16 @@ public class KeepsRepository : IRepository<Keep, int>
   {
     string sql = @"
     SELECT
-    *
-    FROM keeps;
+    k.*,
+    ac.*
+    FROM keeps k
+    JOIN accounts ac ON ac.id = k.creatorId;
     ";
-    List<Keep> keeps = _db.Query<Keep>(sql).ToList();
+    List<Keep> keeps = _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+    {
+      keep.Creator = account;
+      return keep;
+    }).ToList();
     return keeps;
   }
 
@@ -62,16 +68,16 @@ public class KeepsRepository : IRepository<Keep, int>
     }, new { id }).FirstOrDefault();
   }
 
-  public bool Update(Keep update)
+  public bool Update(Keep original)
   {
     string sql = @"
-    UPDATE keeps SET
-    name = @name
+    UPDATE keeps
+    SET
+    name = @name,
     description = @description
-    img = @img
     WHERE id = @id;
     ";
-    int rows = _db.Execute(sql, update);
+    int rows = _db.Execute(sql, original);
     return rows > 0;
   }
 }

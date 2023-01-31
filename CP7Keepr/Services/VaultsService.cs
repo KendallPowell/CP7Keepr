@@ -22,7 +22,7 @@ public class VaultsService
     {
       throw new Exception($"No Vault at this id:{id}");
     }
-    if (vault.CreatorId != userId)
+    if (vault.IsPrivate == true && vault.CreatorId != userId)
     {
       throw new Exception("This Vault does not belong to you.");
     }

@@ -53,6 +53,6 @@ public class KeepsService
       throw new Exception("This Keep does not belong to you");
     }
     _repo.Delete(id);
-    return $"{keep.Name} has been taken care of";
+    return $"'{keep.Name}' has been taken care of";
   }
 }
