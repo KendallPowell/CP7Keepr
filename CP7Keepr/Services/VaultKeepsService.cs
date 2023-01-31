@@ -13,21 +13,22 @@ public class VaultKeepsService
 
   internal VaultKeep Create(VaultKeep vaultkeepData)
   {
+    Vault vault = _vaultsService.GetOne(vaultkeepData.VaultId, vaultkeepData.CreatorId);
     VaultKeep vaultor = _repo.Create(vaultkeepData);
     return vaultor;
   }
 
-  internal string Remove(int VaultKeepId, string userId)
-  {
-    VaultKeep vaultkeep = _repo.GetByVaultId(VaultKeepId, userId);
-    if (vaultkeep == null) throw new Exception($"There is no Keep at this id:{VaultKeepId}");
+  // internal string Remove(int VaultKeepId, string userId)
+  // {
+  //   VaultKeep vaultkeep = _repo.GetByVaultId(VaultKeepId, userId);
+  //   if (vaultkeep == null) throw new Exception($"There is no Keep at this id:{VaultKeepId}");
 
-    Vault vault = _vaultsService.GetOne(vaultkeep.VaultId, userId);
-    if (userId != vault.CreatorId) throw new Exception("This Vault does not belong to you.");
+  //   Vault vault = _vaultsService.GetOne(vaultkeep.VaultId, userId);
+  //   if (userId != vault.CreatorId) throw new Exception("This Vault does not belong to you.");
 
-    bool result = _repo.Remove(VaultKeepId);
-    if (result == false) throw new Exception($"There is no keep at this id: {VaultKeepId}");
+  //   bool result = _repo.Remove(VaultKeepId);
+  //   if (result == false) throw new Exception($"There is no keep at this id: {VaultKeepId}");
 
-    return "keep removed from vault";
-  }
+  //   return "keep removed from vault";
+  // }
 }

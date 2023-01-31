@@ -3,10 +3,12 @@ namespace CP7Keepr.Services;
 public class VaultsService
 {
   private readonly VaultsRepository _repo;
+  private readonly KeepsRepository _keepsRepository;
 
-  public VaultsService(VaultsRepository repo)
+  public VaultsService(VaultsRepository repo, KeepsRepository keepsRepository)
   {
     _repo = repo;
+    _keepsRepository = keepsRepository;
   }
 
   internal Vault Create(Vault vaultData)
@@ -27,6 +29,13 @@ public class VaultsService
       throw new Exception("This Vault does not belong to you.");
     }
     return vault;
+  }
+
+  internal List<Keep> GetKeeps(int vaultId, string userId)
+  {
+    Vault vault = GetOne(vaultId, userId);
+    List<Keep> keeps = _keepsRepository.GetKeeps(vaultId);
+    return keeps;
   }
 
   internal Vault Update(Vault updateData, string userId)

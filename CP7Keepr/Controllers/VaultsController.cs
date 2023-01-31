@@ -46,6 +46,21 @@ public class VaultsController : ControllerBase
     }
   }
 
+  [HttpGet("{id}/keeps")]
+  public async Task<ActionResult<List<Keep>>> GetKeepsInVault(int id)
+  {
+    try
+    {
+      Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Keep> keep = _vaultsService.GetKeeps(id, userInfo?.Id);
+      return Ok(keep);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
   [HttpPut("{id}")]
   [Authorize]
   public async Task<ActionResult<Vault>> Update(int id, [FromBody] Vault updateData)
