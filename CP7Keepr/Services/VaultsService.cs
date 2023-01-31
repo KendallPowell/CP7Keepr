@@ -31,13 +31,6 @@ public class VaultsService
     return vault;
   }
 
-  internal List<Keep> GetKeeps(int vaultId, string userId)
-  {
-    Vault vault = GetOne(vaultId, userId);
-    List<Keep> keeps = _keepsRepository.GetKeeps(vaultId);
-    return keeps;
-  }
-
   internal Vault Update(Vault updateData, string userId)
   {
     Vault original = GetOne(updateData.Id, userId);

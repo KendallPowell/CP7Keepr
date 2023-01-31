@@ -6,11 +6,13 @@ public class VaultsController : ControllerBase
 {
   private readonly VaultsService _vaultsService;
   private readonly Auth0Provider _auth0provider;
+  private readonly VaultKeepsService _vaultKeepsService;
 
-  public VaultsController(VaultsService vaultsService, Auth0Provider auth0provider)
+  public VaultsController(VaultsService vaultsService, Auth0Provider auth0provider, VaultKeepsService vaultKeepsService)
   {
     _vaultsService = vaultsService;
     _auth0provider = auth0provider;
+    _vaultKeepsService = vaultKeepsService;
   }
 
   [HttpPost]
@@ -52,8 +54,8 @@ public class VaultsController : ControllerBase
     try
     {
       Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
-      List<Keep> keep = _vaultsService.GetKeeps(id, userInfo?.Id);
-      return Ok(keep);
+      List<Keep> keeps = _vaultKeepsService.GetKeeps(id, userInfo?.Id);
+      return Ok(keeps);
     }
     catch (Exception e)
     {

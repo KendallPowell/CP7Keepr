@@ -23,20 +23,27 @@ public class VaultKeepsRepository
     return vaultkeepData;
   }
 
-  internal List<KeepinsideVaults> GetByVaultId(int id, string userId)
+  internal List<VaultKeeps> GetKeeps(int vaultId)
   {
     string sql = @"
     SELECT
+    vk.*,
     k.*,
-    vk.Id AS VaultKeepId
+    a.*
     FROM vaultkeeps vk
     JOIN keeps k ON vk.keepId = k.id
-    JOIN vaults v ON vk.vaultId = v.id
-    WHERE v.id = @id
+    JOIN accounts a ON k.creatorId =a.id
+    WHERE vk.vaultId = @vaultId
     AND (v.isPrivate = false OR v.creatorId = @userId);
     ";
-    List<KeepinsideVaults> res = _db.Query<KeepinsideVaults>(sql, new { id, userId }).ToList();
-    return res;
+    List<VaultKeeps> keeps = _db.Query<VaultKeep, VaultKeeps, Account, VaultKeeps>(sql, (vaultkeeps, keeps, account) =>
+    {
+      keeps.VaultKeepId = vaultkeeps.Id;
+      keeps.Creator = account;
+      return keeps;
+    }, new { vaultId }).ToList();
+    return keeps;
+
   }
 
   internal bool Remove(int vaultKeepId)
