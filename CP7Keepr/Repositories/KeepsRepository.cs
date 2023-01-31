@@ -55,9 +55,9 @@ public class KeepsRepository : IRepository<Keep, int>
   {
     string sql = @"
     SELECT
-    k.*,
+    vk.*,
     a.*
-    FROM keeps k
+    FROM vaultkeeps vk
     JOIN accounts a ON k.creatorId = a.id
     WHERE k.vaultId = @vaultId;
     ";
