@@ -51,4 +51,16 @@ public class VaultsService
     _repo.Remove(id);
     return $"{original.Name} is no longer a thing";
   }
+
+  internal List<Vault> GetVaultsInProfile(string id)
+  {
+    List<Vault> vaults = _repo.GetVaultsInProfile(id);
+    return vaults;
+  }
+
+  internal List<Vault> GetMyVaults(string accountId)
+  {
+    List<Vault> myVaults = _repo.GetMyVaults(accountId);
+    return myVaults;
+  }
 }

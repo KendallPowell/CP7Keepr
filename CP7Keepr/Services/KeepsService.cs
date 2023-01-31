@@ -55,4 +55,10 @@ public class KeepsService
     _repo.Delete(id);
     return $"'{keep.Name}' has been taken care of";
   }
+
+  internal List<Keep> GetKeepsInProfile(string id)
+  {
+    List<Keep> keeps = _repo.GetKeepsInProfile(id);
+    return keeps;
+  }
 }

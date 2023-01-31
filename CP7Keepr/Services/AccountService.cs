@@ -31,4 +31,11 @@ public class AccountService
     original.Picture = editData.Picture.Length > 0 ? editData.Picture : original.Picture;
     return _repo.Edit(original);
   }
+
+  internal Account GetProfileById(string accountId)
+  {
+    Account account = _repo.GetProfileById(accountId);
+    if (GetProfileByEmail == null) throw new Exception("There is no account/profile at this id");
+    return account;
+  }
 }

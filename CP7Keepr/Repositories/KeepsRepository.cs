@@ -82,4 +82,22 @@ public class KeepsRepository : IRepository<Keep, int>
     int rows = _db.Execute(sql, original);
     return rows > 0;
   }
+
+  internal List<Keep> GetKeepsInProfile(string id)
+  {
+    string sql = @"
+    SELECT
+    k.*,
+    a.*
+    FROM keeps k
+    JOIN accounts a ON k.accountId = a.id
+    WHERE k.keepId = @keepId;
+    ";
+    List<Keep> keeps = _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+    {
+      keep.Creator = account;
+      return keep;
+    }).ToList();
+    return keeps;
+  }
 }

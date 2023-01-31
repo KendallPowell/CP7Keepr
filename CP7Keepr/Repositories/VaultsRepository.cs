@@ -23,6 +23,19 @@ public class VaultsRepository
     return vaultData;
   }
 
+  internal List<Vault> GetMyVaults(string vaultId)
+  {
+    string sql = @"
+    SELECT
+    ac.*,
+    v.id AS vaultId
+    FROM vaults v
+    JOIN accounts ac ON ac.id = v.accountId
+    WHERE v.vaultId = @vaultId;
+    ";
+    return _db.Query<Vault>(sql, new { vaultId }).ToList();
+  }
+
   internal Vault GetOne(int id)
   {
     string sql = @"
@@ -38,6 +51,24 @@ public class VaultsRepository
       vault.Creator = account;
       return vault;
     }, new { id }).FirstOrDefault();
+  }
+
+  internal List<Vault> GetVaultsInProfile(string id)
+  {
+    string sql = @"
+    SELECT
+    v.*,
+    a.*
+    FROM vaults v
+    JOIN accounts a ON v.accountId = a.id
+    WHERE v.vaultId = @vaultId;
+    ";
+    List<Vault> vaults = _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
+    {
+      vault.Creator = account;
+      return vault;
+    }).ToList();
+    return vaults;
   }
 
   internal void Remove(int id)
