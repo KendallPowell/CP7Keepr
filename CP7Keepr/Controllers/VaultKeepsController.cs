@@ -22,7 +22,7 @@ public class VaultKeepsController : ControllerBase
     {
       Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
       vaultkeepData.CreatorId = userInfo.Id;
-      VaultKeep vaultkeep = _vaultkeepsService.Create(vaultkeepData);
+      VaultKeep vaultkeep = _vaultkeepsService.Create(vaultkeepData, userInfo?.Id);
       vaultkeepData.Creator = userInfo;
       return Ok(vaultkeep);
     }
