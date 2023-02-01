@@ -33,6 +33,21 @@ public class VaultsController : ControllerBase
     }
   }
 
+  [HttpGet]
+  public async Task<ActionResult<Vault>> Get()
+  {
+    try
+    {
+      Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Vault> vaults = _vaultsService.Get(userInfo?.Id);
+      return Ok(vaults);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
   [HttpGet("{id}")]
   public async Task<ActionResult<Vault>> GetOne(int id)
   {
@@ -54,7 +69,7 @@ public class VaultsController : ControllerBase
     try
     {
       Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
-      List<Keep> keeps = _vaultKeepsService.GetKeeps(id, userInfo?.Id);
+      List<VaultKeeps> keeps = _vaultKeepsService.GetKeeps(id, userInfo?.Id);
       return Ok(keeps);
     }
     catch (Exception e)

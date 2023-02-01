@@ -15,3 +15,8 @@ public class VaultKeeps : Vault
 {
   public int VaultKeepId { get; set; }
 }
+
+public class MyVaults : Vault
+{
+  public int VaultMemberId { get; set; }
+}

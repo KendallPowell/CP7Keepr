@@ -101,21 +101,20 @@ public class KeepsRepository : IRepository<Keep, int>
     return rows > 0;
   }
 
-  internal List<Keep> GetKeepsInProfile(string id)
+  internal List<Keep> GetKeepsInProfile(string accountId)
   {
     string sql = @"
     SELECT
-    k.*,
-    a.*
-    FROM keeps k
-    JOIN accounts a ON k.accountId = a.id
-    WHERE k.keepId = @keepId;
+    *
+    FROM keeps
+    JOIN accounts ON accounts.id = keeps.creatorId
+    WHERE keeps.creatorId = @accountId;
     ";
     List<Keep> keeps = _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
     {
       keep.Creator = account;
       return keep;
-    }).ToList();
+    }, new { accountId }).ToList();
     return keeps;
   }
 }

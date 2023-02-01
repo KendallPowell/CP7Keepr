@@ -3,12 +3,10 @@ namespace CP7Keepr.Services;
 public class KeepsService
 {
   private readonly KeepsRepository _repo;
-  private readonly VaultKeepsService _vaultkeepsService;
 
-  public KeepsService(KeepsRepository repo, VaultKeepsService vaultkeepsService)
+  public KeepsService(KeepsRepository repo)
   {
     _repo = repo;
-    _vaultkeepsService = vaultkeepsService;
   }
 
   internal Keep Create(Keep keepData)
@@ -26,7 +24,7 @@ public class KeepsService
   internal Keep GetOne(int id, string userId)
   {
     Keep keep = _repo.GetOne(id);
-    if (keep == null)
+    if (keep.Id == 0)
     {
       throw new Exception("No Keep at this id");
     }

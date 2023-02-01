@@ -23,6 +23,17 @@ public class VaultKeepsRepository
     return vaultkeepData;
   }
 
+  internal VaultKeep GetOne(int id)
+  {
+    string sql = @"
+    SELECT
+    *
+    FROM vaultkeeps
+    WHERE id = @id
+    ";
+    return _db.Query<VaultKeep>(sql, new { id }).FirstOrDefault();
+  }
+
   internal List<VaultKeeps> GetKeeps(int vaultId)
   {
     string sql = @"
@@ -34,7 +45,6 @@ public class VaultKeepsRepository
     JOIN keeps k ON vk.keepId = k.id
     JOIN accounts a ON k.creatorId =a.id
     WHERE vk.vaultId = @vaultId
-    AND (v.isPrivate = false OR v.creatorId = @userId);
     ";
     List<VaultKeeps> keeps = _db.Query<VaultKeep, VaultKeeps, Account, VaultKeeps>(sql, (vaultkeeps, keeps, account) =>
     {
@@ -50,7 +60,7 @@ public class VaultKeepsRepository
   {
     string sql = @"
     DELETE FROM vaultkeeps
-    WHERE id = @vaultkeepsId;
+    WHERE id = @vaultkeepId;
     ";
     int rows = _db.Execute(sql, new { vaultKeepId });
     return rows > 0;

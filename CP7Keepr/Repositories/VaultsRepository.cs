@@ -13,9 +13,9 @@ public class VaultsRepository
   {
     string sql = @"
     INSERT INTO vaults
-    (creatorId, name, description, img)
+    (creatorId, name, description, img, isprivate)
     VALUES
-    (@creatorId, @name, @description, @img);
+    (@creatorId, @name, @description, @img, @isprivate);
     SELECT LAST_INSERT_ID();
     ";
     int id = _db.ExecuteScalar<int>(sql, vaultData);
@@ -23,17 +23,15 @@ public class VaultsRepository
     return vaultData;
   }
 
-  internal List<Vault> GetMyVaults(string vaultId)
+  public List<Vault> Get()
   {
     string sql = @"
     SELECT
-    ac.*,
-    v.id AS vaultId
-    FROM vaults v
-    JOIN accounts ac ON ac.id = v.accountId
-    WHERE v.vaultId = @vaultId;
+    *
+    FROM vaults;
     ";
-    return _db.Query<Vault>(sql, new { vaultId }).ToList();
+    List<Vault> vaults = _db.Query<Vault>(sql).ToList();
+    return vaults;
   }
 
   internal Vault GetOne(int id)
@@ -53,21 +51,24 @@ public class VaultsRepository
     }, new { id }).FirstOrDefault();
   }
 
-  internal List<Vault> GetVaultsInProfile(string id)
+  internal List<Vault> GetVaultsInProfile(string accountId)
   {
     string sql = @"
     SELECT
-    v.*,
-    a.*
-    FROM vaults v
-    JOIN accounts a ON v.accountId = a.id
-    WHERE v.vaultId = @vaultId;
+    *
+    FROM vaults
+    JOIN accounts ON accounts.id = vaults.creatorId
+    WHERE vaults.creatorId = @accountId;
     ";
     List<Vault> vaults = _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
     {
-      vault.Creator = account;
+      if (vault.IsPrivate == true)
+      {
+        vault.Creator = account;
+        return vault;
+      }
       return vault;
-    }).ToList();
+    }, new { accountId }).ToList();
     return vaults;
   }
 
