@@ -23,17 +23,6 @@ public class VaultsRepository
     return vaultData;
   }
 
-  public List<Vault> Get()
-  {
-    string sql = @"
-    SELECT
-    *
-    FROM vaults;
-    ";
-    List<Vault> vaults = _db.Query<Vault>(sql).ToList();
-    return vaults;
-  }
-
   internal Vault GetOne(int id)
   {
     string sql = @"
@@ -51,24 +40,38 @@ public class VaultsRepository
     }, new { id }).FirstOrDefault();
   }
 
-  internal List<Vault> GetVaultsInProfile(string accountId)
+  internal List<Vault> GetVaultsInProfile(string creatorId)
   {
     string sql = @"
     SELECT
-    *
-    FROM vaults
-    JOIN accounts ON accounts.id = vaults.creatorId
-    WHERE vaults.creatorId = @accountId;
+    v.*,
+    ac.*
+    FROM vaults v
+    JOIN accounts ac ON ac.id = v.creatorId
+    WHERE ac.id = @creatorId AND isPrivate = false;
+    ";
+    return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
+    {
+      vault.Creator = account;
+      return vault;
+    }, new { creatorId }).ToList();
+  }
+
+  internal List<Vault> GetMyVaults(string userId)
+  {
+    string sql = @"
+    SELECT
+    v.*,
+    a.*
+    FROM vaults v 
+    JOIN accounts a ON a.id = v.creatorId
+    WHERE v.creatorId = @userId;
     ";
     List<Vault> vaults = _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
     {
-      if (vault.IsPrivate == true)
-      {
-        vault.Creator = account;
-        return vault;
-      }
+      vault.Creator = account;
       return vault;
-    }, new { accountId }).ToList();
+    }, new { userId }).ToList();
     return vaults;
   }
 

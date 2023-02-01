@@ -17,12 +17,6 @@ public class VaultsService
     return vault;
   }
 
-  internal List<Vault> Get(string userId)
-  {
-    List<Vault> vaults = _repo.Get();
-    List<Vault> filtered = vaults.FindAll(f => f.IsPrivate == false || f.CreatorId == userId);
-    return filtered;
-  }
 
   internal Vault GetOne(int id, string userId)
   {
@@ -61,10 +55,15 @@ public class VaultsService
     return $"{original.Name} is no longer a thing";
   }
 
-  internal List<Vault> GetVaultsInProfile(string id)
+  internal List<Vault> GetVaultsInProfile(string profileId, string userId)
   {
-    List<Vault> vaults = _repo.GetVaultsInProfile(id);
-    List<Vault> filtered = vaults.FindAll(v => v.IsPrivate == false || v.CreatorId == id);
-    return vaults;
+    return _repo.GetVaultsInProfile(profileId);
+    // List<Vault> filtered = vaults.FindAll(v => v.IsPrivate == false && v.CreatorId != userId);
+    // return filtered;
+  }
+
+  internal List<Vault> GetMyVaults(string userId)
+  {
+    return _repo.GetMyVaults(userId);
   }
 }

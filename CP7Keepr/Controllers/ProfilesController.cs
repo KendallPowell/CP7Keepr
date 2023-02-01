@@ -39,11 +39,12 @@ namespace CP7Keepr.Controllers
     }
 
     [HttpGet("{id}/vaults")]
-    public ActionResult<List<Vault>> GetProfilesVaults(string id)
+    public async Task<ActionResult<List<Vault>>> GetProfilesVaults(string id)
     {
       try
       {
-        List<Vault> vaults = _vaultsService.GetVaultsInProfile(id);
+        Account userInfo = await _auth0provider.GetUserInfoAsync<Account>(HttpContext);
+        List<Vault> vaults = _vaultsService.GetVaultsInProfile(id, userInfo?.Id);
         return Ok(vaults);
       }
       catch (Exception e)

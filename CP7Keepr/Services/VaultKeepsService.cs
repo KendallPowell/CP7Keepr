@@ -16,11 +16,13 @@ public class VaultKeepsService
   internal VaultKeep Create(VaultKeep vaultkeepData, string userId)
   {
     Vault vault = _vaultsService.GetOne(vaultkeepData.VaultId, vaultkeepData.CreatorId);
+    //Keep keep = _keepsService.GetOne()
     if (vault.CreatorId != userId)
     {
       throw new Exception("You need to be logged in.");
     }
     VaultKeep vaultor = _repo.Create(vaultkeepData);
+    // NOTE Increase keep
     return vaultor;
   }
 
