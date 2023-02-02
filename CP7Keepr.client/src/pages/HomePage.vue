@@ -15,18 +15,25 @@ import { computed, reactive, onMounted } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { keepsService } from "../services/KeepsService.js";
+
 export default {
   setup() {
+
     async function getKeeps() {
       try {
-        await keepsService.getKeeps()
+        await keepsService.getKeeps();
       } catch (error) {
         Pop.error(error);
         logger.error(error.message);
       }
     }
-    return {
 
+    onMounted(() => {
+      getKeeps();
+    })
+
+    return {
+      keeps: computed(() => AppState.keeps)
     }
   }
 };
