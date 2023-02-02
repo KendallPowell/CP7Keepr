@@ -15,22 +15,28 @@
         Create
       </a>
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Create Vault</a></li>
-        <li><a class="dropdown-item" href="#">Create Keep</a></li>
+        <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#CreateKeep">Create
+            Keep</button></li>
+        <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#CreateVault">Create
+            Vault</button></li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
     </div>
     <Login />
   </nav>
+  <CreateKeepModal />
+  <CreateVaultModal />
 </template>
 
 <script>
+import CreateKeepModal from "./CreateKeepModal.vue";
+import CreateVaultModal from "./CreateVaultModal.vue";
 import Login from './Login.vue'
 export default {
   setup() {
     return {}
   },
-  components: { Login }
+  components: { Login, CreateKeepModal, CreateVaultModal }
 }
 </script>
 
