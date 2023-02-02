@@ -8,8 +8,16 @@ class KeepsService {
   async getKeeps() {
     const res = await api.get('/api/keeps')
     logger.log(res.data)
-    // AppState.keeps = res.data
-    // .map(k => new Keep(k))
+    AppState.keeps = res.data
+  }
+
+  async getActiveKeep(keepId) {
+    const res = await api.get('api/keeps/' + keepId)
+    // logger.log("[getting the active keep]", res.data)
+    AppState.activeKeep = res.data
+    if (AppState.activeKeep.creatorId != AppState.account.id) {
+      AppState.activeKeep.views++
+    }
   }
 
 }

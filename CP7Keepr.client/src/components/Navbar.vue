@@ -9,10 +9,15 @@
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <a class="d-flex flex-column align-items-center selectable fs-5 fw-bold">
+    <div class="collapse navbar-collapse dropdown p-3" id="navbarText">
+      <a class="d-flex flex-column align-items-center selectable fs-5 fw-bold dropdown-toggle"
+        data-bs-toggle="dropdown">
         Create
       </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Create Vault</a></li>
+        <li><a class="dropdown-item" href="#">Create Keep</a></li>
+      </ul>
       <!-- LOGIN COMPONENT HERE -->
     </div>
     <Login />
