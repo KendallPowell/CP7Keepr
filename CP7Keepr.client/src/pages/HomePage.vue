@@ -36,7 +36,7 @@ export default {
     });
 
     return {
-      keeps: computed(() => AppState.keeps)
+      keeps: computed(() => AppState.keeps),
     }
   }
 };
