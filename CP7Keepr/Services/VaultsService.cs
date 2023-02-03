@@ -57,7 +57,7 @@ public class VaultsService
 
   internal List<Vault> GetVaultsInProfile(string profileId, string userId)
   {
-    return _repo.GetVaultsInProfile(profileId);
+    return _repo.GetVaultsInProfile(profileId, userId);
     // List<Vault> filtered = vaults.FindAll(v => v.IsPrivate == false && v.CreatorId != userId);
     // return filtered;
   }

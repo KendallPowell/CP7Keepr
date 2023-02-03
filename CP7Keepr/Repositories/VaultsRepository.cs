@@ -40,7 +40,7 @@ public class VaultsRepository
     }, new { id }).FirstOrDefault();
   }
 
-  internal List<Vault> GetVaultsInProfile(string creatorId)
+  internal List<Vault> GetVaultsInProfile(string creatorId, string userId)
   {
     string sql = @"
     SELECT
@@ -48,13 +48,13 @@ public class VaultsRepository
     ac.*
     FROM vaults v
     JOIN accounts ac ON ac.id = v.creatorId
-    WHERE ac.id = @creatorId AND isPrivate = false;
+    WHERE ac.id = @creatorId AND (v.isPrivate = false OR v.creatorId = @userId);
     ";
     return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
     {
       vault.Creator = account;
       return vault;
-    }, new { creatorId }).ToList();
+    }, new { creatorId, userId }).ToList();
   }
 
   internal List<Vault> GetMyVaults(string userId)

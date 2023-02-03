@@ -23,7 +23,7 @@
                 id="description"></textarea>
             </div>
             <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <input type="checkbox" v-model="editable.IsPrivate" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Make Private?</label>
             </div>
             <div class="modal-footer">
@@ -54,7 +54,6 @@ export default {
       async makeVault() {
         try {
           editable.value.vaultId = route.params.id
-          editable.value.IsPrivate = false
           await vaultsService.makeVault(editable.value)
           editable.value = {}
           Pop.toast('Vault Created', 'success')

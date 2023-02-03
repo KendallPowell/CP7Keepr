@@ -9,7 +9,7 @@
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse dropdown p-3" id="navbarText">
+    <div v-if="account.id" class="collapse navbar-collapse dropdown p-3" id="navbarText">
       <a class="d-flex flex-column align-items-center selectable fs-5 fw-bold dropdown-toggle"
         data-bs-toggle="dropdown">
         Create
@@ -32,9 +32,13 @@
 import CreateKeepModal from "./CreateKeepModal.vue";
 import CreateVaultModal from "./CreateVaultModal.vue";
 import Login from './Login.vue'
+import { computed } from 'vue';
+import { AppState } from '../AppState.js';
 export default {
   setup() {
-    return {}
+    return {
+      account: computed(() => AppState.account)
+    }
   },
   components: { Login, CreateKeepModal, CreateVaultModal }
 }

@@ -69,7 +69,7 @@ public class KeepsRepository : IRepository<Keep, int>
     return keeps;
   }
 
-  public Keep GetOne(int id)
+  public Keep GetOneKeep(int id, string userId)
   {
     string sql = @"
     SELECT
@@ -81,11 +81,18 @@ public class KeepsRepository : IRepository<Keep, int>
     LEFT JOIN vaultkeeps vk ON vk.keepId = k.id
     WHERE k.id = @id;
   ";
-    return _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+    Keep keep = _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
     {
       keep.Creator = account;
       return keep;
     }, new { id }).FirstOrDefault();
+    if (keep.CreatorId != userId)
+    {
+      _db.ExecuteScalar<int>("UPDATE keeps SET views = views +1 WHERE id = @id", new { id });
+      keep.Views++;
+    }
+    return keep;
+
   }
 
   public bool Update(Keep original)
@@ -116,5 +123,10 @@ public class KeepsRepository : IRepository<Keep, int>
       return keep;
     }, new { accountId }).ToList();
     return keeps;
+  }
+
+  public Keep GetOne(int id)
+  {
+    throw new NotImplementedException();
   }
 }

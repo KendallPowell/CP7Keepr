@@ -23,7 +23,7 @@ public class KeepsService
 
   internal Keep GetOne(int id, string userId)
   {
-    Keep keep = _repo.GetOne(id);
+    Keep keep = _repo.GetOneKeep(id, userId);
     if (keep.Id == 0)
     {
       throw new Exception("No Keep at this id");

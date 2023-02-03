@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { authGuard } from '@bcwdev/auth0provider-client'
+import { authGuard, authSettled } from '@bcwdev/auth0provider-client'
 
 function loadPage(page) {
   return () => import(`./pages/${page}.vue`)
@@ -17,9 +17,16 @@ const routes = [
     component: loadPage('AboutPage')
   },
   {
+    path: '/vault/:id',
+    name: 'Vault',
+    component: loadPage('VaultPage'),
+    beforeEnter: authSettled
+  },
+  {
     path: '/profile/:profileId',
     name: 'Profile',
-    component: loadPage('ProfilePage')
+    component: loadPage('ProfilePage'),
+    beforeEnter: authSettled
   },
   {
     path: '/account',

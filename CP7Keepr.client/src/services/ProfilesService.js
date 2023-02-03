@@ -5,18 +5,18 @@ import { api } from "./AxiosService.js"
 class ProfilesService {
   async getProfile(id) {
     const res = await api.get(`api/profiles/${id}`)
-    AppState.activeProfile = res.data
     logger.log('Active Profile', AppState.activeProfile)
+    AppState.activeProfile = res.data
   }
   async getProfileKeeps(id) {
     const res = await api.get(`api/profiles/${id}/keeps`)
-    AppState.profileKeeps = res.data
     logger.log('getting profile keeps', AppState.profileKeeps)
+    AppState.profileKeeps = res.data
   }
   async getProfileVaults(id) {
     const res = await api.get(`api/profiles/${id}/vaults`)
-    AppState.profileVaults = res.data
     logger.log('getting profile vaults', AppState.profileVaults)
+    AppState.profileVaults = res.data
   }
 
 }

@@ -8,6 +8,10 @@ CREATE TABLE
         picture varchar(255) COMMENT 'User Picture'
     ) default charset utf8 COMMENT '';
 
+ALTER TABLE accounts
+ADD
+    COLUMN coverImg VARCHAR(255) DEFAULT "https://images.unsplash.com/photo-1453733190371-0a9bedd82893?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80";
+
 CREATE TABLE
     IF NOT EXISTS vaults(
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
