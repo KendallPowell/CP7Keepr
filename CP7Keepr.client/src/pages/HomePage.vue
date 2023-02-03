@@ -2,7 +2,7 @@
 <template>
   <div class="container-fluid">
     <div class="mason">
-      <div v-for="k in keeps" title="Go to Keep's Details." class="p-1">
+      <div v-for="k in keeps" title="Go to Keep's Details." class="">
         <KeepCard :keep="k" />
       </div>
     </div>

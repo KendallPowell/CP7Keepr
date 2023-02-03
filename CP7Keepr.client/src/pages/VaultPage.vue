@@ -3,6 +3,8 @@
     <img :src="vault?.img" class="rounded" alt="">
     <h1>{{ vault?.name }}</h1>
     <h4>by {{ vault.creator?.name }}</h4>
+    <button class="border-0 bg-transparent" v-if="vault?.creatorId == account?.id" @click.stop="deleteVault()"
+      title="Delete Vault"><i class="mdi mdi-delete text-button fs-4"></i></button>
   </div>
   <div>
     <h5 class="text-center">{{ keeps?.length }} Keeps</h5>
@@ -64,6 +66,15 @@ export default {
         }
         catch (error) {
           Pop.toast(error.data, "error", "center");
+        }
+      },
+      async deleteVault() {
+        try {
+          if (await Pop.confirm())
+            await vaultsService.deleteVault(AppState.activeVault?.id)
+          Pop.toast('Vault Deleted', 'success')
+        } catch (error) {
+
         }
       }
     };

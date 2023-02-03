@@ -24,7 +24,7 @@
                 <button @click="removeKeepFromVault()">Remove Keep from Vault</button>
               </div>
               <button class="border-0 bg-transparent" v-if="activeKeep?.creatorId == account?.id"
-                @click.stop="deleteKeep()"><i class="mdi mdi-delete text-button fs-4"></i></button>
+                @click.stop="deleteKeep()" title="Delete Keep"><i class="mdi mdi-delete text-button fs-4"></i></button>
               <img @click="goToProfile" data-bs-dismiss="modal" class="creator-pic" :src="activeKeep.creator?.picture"
                 :title="activeKeep.creator?.name">
               <h6>{{ activeKeep.creator?.name }}</h6>
@@ -63,6 +63,7 @@ export default {
           this.editable.keepId = this.activeKeep.id
           console.log(this.editable)
           vaultKeepsService.addKeepToVault(this.editable)
+          this.activeKeep.kept++
           Pop.toast('Keep added to Vault', 'success')
         } catch (error) {
           logger.error(error)
@@ -104,7 +105,7 @@ export default {
   width: 50px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 10px;
+  margin-right: 15px;
   margin-bottom: 15px;
 }
 </style>
