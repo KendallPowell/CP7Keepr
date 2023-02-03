@@ -53,4 +53,10 @@ export default {
 .mason {
   columns: 4;
 }
+
+@media (max-width: 550px) {
+  .mason {
+    columns: 2;
+  }
+}
 </style>

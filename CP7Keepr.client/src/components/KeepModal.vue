@@ -2,9 +2,9 @@
   <div class="modal fade" id="keepDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl ">
       <div class="modal-content text-dark">
-        <div class="d-flex">
-          <img :src="activeKeep.img" class="w-50 rounded-start" alt="">
-          <div class="keepModal d-flex flex-column justify-content-between w-50">
+        <div class="row">
+          <img :src="activeKeep.img" class="col-12 col-md-6 rounded-start" alt="">
+          <div class="keepModal col-12 col-md-6  d-md-flex flex-column justify-content-between ">
             <div class="d-flex gap-4 justify-content-center w-100">
               <i class="mdi mdi-eye">{{ activeKeep?.views }}</i>
               <i class="mdi mdi-alpha-k-circle-outline"> {{ activeKeep?.kept }}</i>
@@ -23,10 +23,10 @@
               <div v-if="keep?.vaultKeepId && account?.id">
                 <button @click="removeKeepFromVault()">Remove Keep from Vault</button>
               </div>
-              <button class="border-0 bg-transparent" v-if="keep?.creatorId == account?.id"
+              <button class="border-0 bg-transparent" v-if="activeKeep?.creatorId == account?.id"
                 @click.stop="deleteKeep()"><i class="mdi mdi-delete text-button fs-4"></i></button>
               <img @click="goToProfile" data-bs-dismiss="modal" class="creator-pic" :src="activeKeep.creator?.picture"
-                :title="activeKeep.creator.name">
+                :title="activeKeep.creator?.name">
               <h6>{{ activeKeep.creator?.name }}</h6>
             </div>
           </div>
@@ -63,6 +63,7 @@ export default {
           this.editable.keepId = this.activeKeep.id
           console.log(this.editable)
           vaultKeepsService.addKeepToVault(this.editable)
+          Pop.toast('Keep added to Vault', 'success')
         } catch (error) {
           logger.error(error)
           Pop.error(error.message)
@@ -71,6 +72,7 @@ export default {
       async removeKeepFromVault() {
         try {
           await vaultKeepsService.removeKeepFromVault(props.keep?.vaultKeepId)
+          Pop.toast('Keep removed from Vault', 'success')
         } catch (error) {
           logger.error(error)
           Pop.error(error.message)
@@ -80,6 +82,7 @@ export default {
         try {
           if (await Pop.confirm())
             await keepsService.deleteKeep(AppState.activeKeep?.id)
+          Pop.toast('Keep Deleted', 'success')
         } catch (error) {
           Pop.error(error)
           logger.error(error.message)

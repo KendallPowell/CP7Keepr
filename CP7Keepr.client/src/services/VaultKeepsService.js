@@ -9,6 +9,7 @@ class VaultKeepsService {
 
   async removeKeepFromVault(vaultKeepId) {
     const res = await api.delete('api/vaultKeeps/' + vaultKeepId)
+    AppState.activeVaultKeeps = res.data
     return res.data
   }
 }

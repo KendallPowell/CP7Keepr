@@ -1,9 +1,10 @@
 <template>
   <RouterLink :to="{ name: 'Vault', params: { id: vault.id } }">
-    <div class="vaultCard text-white p-1 elevation-3 selectable">
+    <div class="vaultCard text-white elevation-3 selectable mt-3 p-1">
       <img class="card-img rounded-3" :src="vault.img" alt="">
       <div class="card-img-overlay d-flex justify-content-between align-items-end">
         <h4 class="p-3">{{ vault.name }}</h4>
+        <div v-if="vault.isPrivate == true" class="p-3"><i class="mdi mdi-lock text-danger"></i></div>
       </div>
     </div>
   </RouterLink>
