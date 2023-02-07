@@ -1,4 +1,3 @@
--- Active: 1673975067199@@SG-flaxen-emoji-7657-7112-mysql-master.servers.mongodirector.com@3306
 <template>
   <div class="container-fluid">
     <div class="mason">

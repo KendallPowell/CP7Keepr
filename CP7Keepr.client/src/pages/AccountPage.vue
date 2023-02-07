@@ -1,7 +1,7 @@
 <template>
   <div class="about text-center">
-    <div class="d-flex justify-content-center">
-      <img class="cover-img" :src="account.coverImg" alt="Cover Image">
+    <div class="d-flex justify-content-center cover-img" :style="`background-image: url(${account.coverImg})`">
+      <!-- <img class="cover-img" :src="account.coverImg" alt="Cover Image"> -->
     </div>
     <img class="rounded" :src="account.picture" alt="User Image" />
     <h1>{{ account.name }}</h1>
@@ -23,12 +23,14 @@
   <div class="keep-card">
     <KeepCard :keep="k" v-for="k in profileKeeps" />
   </div>
+  <EditAccountModal />
 </template>
 
 <script>
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from "vue-router"
 import { AppState } from '../AppState'
+import EditAccountModal from "../components/EditAccountModal.vue"
 import KeepCard from "../components/KeepCard.vue"
 import { accountService } from "../services/AccountService.js"
 import { profilesService } from "../services/ProfilesService.js"
@@ -76,7 +78,7 @@ export default {
       }
     };
   },
-  components: { KeepCard }
+  components: { KeepCard, EditAccountModal }
 }
 </script>
 
@@ -86,9 +88,7 @@ img {
 }
 
 .cover-img {
-  padding: 1rem;
-  height: 40vh;
-  width: 50%;
+  height: 50vh;
   background-size: cover;
   background-position: center;
 }
